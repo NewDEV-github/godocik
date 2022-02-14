@@ -8,4 +8,4 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	AudioPlayer.play_full_song(AudioPlayer.Songs.Hill)
+	AudioPlayer.play_song(AudioPlayer.Songs.Hill, false, false, true)

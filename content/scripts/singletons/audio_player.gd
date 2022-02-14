@@ -13,9 +13,10 @@ enum Sfx {
 	NonExistingSfx = 0
 }
 var _current_song_queue = [] #queue for what to play. Possible values could be: ["intro", "middle"], ["ending", "middle"] etc.
-
+var _middle_loop = true #describes if middle part should be looped infinite times, then you can use play_song_ending function
 #let's make some noise ~Benjamin, BTD6
-func play_song(song_idx:int, play_intro:bool=true, play_ending:bool=true) -> void:
+func play_song(song_idx:int, play_intro:bool=true, play_ending:bool=true, loop_middle:bool=true)-> void:
+	_middle_loop = loop_middle
 	var song_name = _song_indexes[str(song_idx)]
 	var _intro_file_path = ""
 	var _ending_file_path = ""
@@ -31,6 +32,9 @@ func play_song(song_idx:int, play_intro:bool=true, play_ending:bool=true) -> voi
 		_current_song_queue.append("ending")
 		_ending_file_path = _random_file(Array(_song_data['song_endings']))
 		$music_ending.stream = load(_ending_file_path)
+	_middle_file_path = _get_song_data(song_name)['song_middle']
+	$music_middle.stream = load(_middle_file_path)
+	
 	#start playing by queue, for now we only chceck if music was marked to play with intro or not and play intro if it is needed.
 	if _current_song_queue.has("intro"):
 		$music_intro.play()
@@ -49,21 +53,28 @@ func _get_song_data(song_name:String) -> Dictionary:
 #randomize file for intros and endings
 func _random_file(file_array:Array) -> String:
 	randomize()
+	print(file_array)
+	print(randi() % file_array.size())
 	var _file = file_array[randi() % file_array.size()]
 	return _file
 
 func _on_music_intro_finished() -> void:
+	print("Intro finished")
 	_current_song_queue.remove(_current_song_queue.find("intro")) #removing "intro"
+	$music_intro.stop()
 	$music_middle.play() #everything was preloaded previously, so for now we only call play method
 
 
 func _on_music_middle_finished() -> void:
-	_current_song_queue.remove(_current_song_queue.find("middle")) #removing "intro"
-	# for now we check if we have to play ending, if so, ending will be played
-	if _current_song_queue.has("ending"):
-		$music_ending.play()
+	if _middle_loop:
+		$music_middle.play()
 	else:
-		_current_song_queue = [] #clear the song queue
+		_current_song_queue.remove(_current_song_queue.find("middle")) #removing "intro"
+		# for now we check if we have to play ending, if so, ending will be played
+		if _current_song_queue.has("ending"):
+			$music_ending.play()
+		else:
+			_current_song_queue = [] #clear the song queue
 
 
 func _on_music_ending_finished() -> void:
@@ -90,3 +101,8 @@ func stop_sfx() -> void:
 
 func play_sfx(sfx_name:String) -> void:
 	pass
+
+#forces to play song ending
+func play_song_ending() -> void:
+	$music_full.stop()
+	_on_music_middle_finished()

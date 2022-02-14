@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://content/scripts/singletons/audio_player.gd" type="Script" id=1]
+
+[node name="audio_player" type="Node"]
+script = ExtResource( 1 )
+
+[node name="music_middle" type="AudioStreamPlayer" parent="."]
+
+[node name="music_intro" type="AudioStreamPlayer" parent="."]
+
+[node name="sfx" type="AudioStreamPlayer" parent="."]
+
+[node name="music_ending" type="AudioStreamPlayer" parent="."]
+
+[node name="music_full" type="AudioStreamPlayer" parent="."]
+
+[connection signal="finished" from="music_middle" to="." method="_on_music_middle_finished"]
+[connection signal="finished" from="music_intro" to="." method="_on_music_intro_finished"]
+[connection signal="finished" from="music_ending" to="." method="_on_music_ending_finished"]
+[connection signal="finished" from="music_full" to="." method="_on_music_full_finished"]

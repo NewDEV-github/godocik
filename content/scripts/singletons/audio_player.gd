@@ -8,6 +8,9 @@ enum Songs {
 var _song_indexes = {
 	"0": "hill"
 }
+var _sfx_indexes = {
+	"0": "jump"
+}
 #sfx names, use them for play_sfx function
 enum Sfx {
 	NonExistingSfx = 0
@@ -40,7 +43,7 @@ func play_song(song_idx:int, play_intro:bool=true, play_ending:bool=true, loop_m
 		$music_intro.play()
 	else:
 		$music_middle.play()
-# getting all information about song files
+# getting all information about song files and sfx
 func _get_song_data(song_name:String) -> Dictionary:
 	var _song_data = {}
 	var _s = load("res://content/audio/%s/init.gd" % song_name).new()
@@ -50,11 +53,14 @@ func _get_song_data(song_name:String) -> Dictionary:
 	_song_data['song_full'] = _s.song_full
 	return _song_data
 
+func _get_sfx_data(song_name:String) -> Dictionary:
+	var _sfx_data = {}
+	var _s = load("res://content/audio/%s/init.gd" % song_name).new()
+	_sfx_data['sfx_file'] = _s.sfx_file
+	return _sfx_data
 #randomize file for intros and endings
 func _random_file(file_array:Array) -> String:
 	randomize()
-	print(file_array)
-	print(randi() % file_array.size())
 	var _file = file_array[randi() % file_array.size()]
 	return _file
 
@@ -110,9 +116,11 @@ func stop_sfx() -> void:
 
 func pause_sfx(paused:bool=true) -> void:
 	$sfx.stream_paused = paused
-func play_sfx(sfx_name:String) -> void:
-	pass
-
+func play_sfx(sfx_idx:int) -> void:
+	var sfx_name = _sfx_indexes[str(sfx_idx)]
+	var _sfx_data = _get_sfx_data(sfx_name)
+	$sfx.stream = load(_random_file(_sfx_data['sfx_file']))
+	$sfx.play()
 #forces to play song ending
 func play_song_ending() -> void:
 	$music_full.stop()

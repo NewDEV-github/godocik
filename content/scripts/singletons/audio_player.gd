@@ -93,6 +93,8 @@ func play_full_song(song_idx:int) -> void:
 	var _song_data = _get_song_data(song_name)
 	var _full_song_file = _random_file(Array(_song_data['song_full']))
 	$music_full.stream = load(_full_song_file)
+	var _ending_file_path = _random_file(Array(_song_data['song_endings']))
+	$music_ending.stream = load(_ending_file_path)
 	$music_full.play()
 
 

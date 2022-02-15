@@ -33,7 +33,7 @@ func play_song(song_idx:int, play_intro:bool=true, play_ending:bool=true, loop_m
 		_ending_file_path = _random_file(Array(_song_data['song_endings']))
 		$music_ending.stream = load(_ending_file_path)
 	_middle_file_path = _get_song_data(song_name)['song_middle']
-	$music_middle.stream = load(_middle_file_path)
+	$music_middle.stream = load(_random_file(Array(_middle_file_path)))
 	
 	#start playing by queue, for now we only chceck if music was marked to play with intro or not and play intro if it is needed.
 	if _current_song_queue.has("intro"):
@@ -85,7 +85,7 @@ func _on_music_ending_finished() -> void:
 func play_full_song(song_idx:int) -> void:
 	var song_name = _song_indexes[str(song_idx)]
 	var _song_data = _get_song_data(song_name)
-	var _full_song_file = _song_data['song_full']
+	var _full_song_file = _random_file(Array(_song_data['song_full']))
 	$music_full.stream = load(_full_song_file)
 	$music_full.play()
 
@@ -94,11 +94,22 @@ func _on_music_full_finished() -> void:
 	pass # Replace with function body.
 
 func stop_song() -> void:
-	pass
+	$music_middle.stop()
+	$music_intro.stop()
+	$music_ending.stop()
+	$music_full.stop()
+
+func pause_song(paused:bool=true) -> void:
+	$music_middle.stream_paused = paused
+	$music_intro.stream_paused = paused
+	$music_ending.stream_paused = paused
+	$music_full.stream_paused = paused
 
 func stop_sfx() -> void:
-	pass
+	$sfx.stop()
 
+func pause_sfx(paused:bool=true) -> void:
+	$sfx.stream_paused = paused
 func play_sfx(sfx_name:String) -> void:
 	pass
 
@@ -106,3 +117,7 @@ func play_sfx(sfx_name:String) -> void:
 func play_song_ending() -> void:
 	$music_full.stop()
 	_on_music_middle_finished()
+
+
+func _on_sfx_finished():
+	pass # Replace with function body.

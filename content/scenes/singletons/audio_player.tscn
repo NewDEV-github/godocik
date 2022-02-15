@@ -17,5 +17,6 @@ script = ExtResource( 1 )
 
 [connection signal="finished" from="music_middle" to="." method="_on_music_middle_finished"]
 [connection signal="finished" from="music_intro" to="." method="_on_music_intro_finished"]
+[connection signal="finished" from="sfx" to="." method="_on_sfx_finished"]
 [connection signal="finished" from="music_ending" to="." method="_on_music_ending_finished"]
 [connection signal="finished" from="music_full" to="." method="_on_music_full_finished"]

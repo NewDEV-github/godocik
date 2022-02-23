@@ -16,6 +16,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Global="*res://core/scripts/Global.gd"
+AudioPlayer="*res://content/scenes/singletons/audio_player.tscn"
 
 [input]
 
@@ -38,6 +39,24 @@ player2_test_right={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":16777233,"unicode":0,"echo":false,"script":null)
  ]
+
+[importer_defaults]
+
+mp3={
+"loop": false,
+"loop_offset": 0
+}
+ogg_vorbis={
+"loop": false
+}
+texture={
+"flags/filter": false
+}
+texture_3d={
+"flags/filter": false
+}
+texture_array={
+"flags/filter": false
 }
 
 [physics]

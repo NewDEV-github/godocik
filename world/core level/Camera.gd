@@ -7,6 +7,7 @@ var fighter2
 
 func _physics_process(delta):
 	camera_normal()
+	print(position)
 
 func _ready():
 	pass 
@@ -16,7 +17,7 @@ func camera_normal():
 		var half = abs(Global.fighters[0].position.x-Global.fighters[1].position.x)/2.0
 		var z = clamp(abs(Global.fighters[0].position.x-Global.fighters[1].position.x)/1400.0,1,3)
 		zoom=Vector2(z,z)
-		position=Vector2(min(Global.fighters[0].position.x,Global.fighters[1].position.x)+half,500)
+		position=Vector2(min(Global.fighters[0].position.x,Global.fighters[1].position.x)+half,0)
 	
 
 	
